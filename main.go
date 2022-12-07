@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,13 +28,17 @@ func main() {
 
 		// create variable for storing directory information
 		var response struct {
-			Path    string
-			Folders []string
-			Files   []string
+			URL         string
+			PreviousURL string
+			Path        string
+			Folders     []string
+			Files       []string
 		}
 
 		// add relevant file and folder data to struct
 		response.Path = path
+		response.URL = ctx.Request.URL.Path
+		response.PreviousURL = strings.ReplaceAll(filepath.Dir(ctx.Request.URL.Path), "\\", "/")
 		for _, file := range files {
 			if file.IsDir() {
 				response.Folders = append(response.Folders, file.Name())
