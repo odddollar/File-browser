@@ -35,6 +35,7 @@ func main() {
 		var response struct {
 			URL         string
 			PreviousURL string
+			FileURL     string
 			Path        string
 			Folders     []string
 			Files       []string
@@ -44,6 +45,7 @@ func main() {
 		response.Path = path
 		response.URL = ctx.Request.URL.Path
 		response.PreviousURL = strings.ReplaceAll(filepath.Dir(ctx.Request.URL.Path), "\\", "/")
+		response.FileURL = strings.Replace(ctx.Request.URL.Path, "folder", "file", 1)
 		for _, file := range files {
 			if file.IsDir() {
 				response.Folders = append(response.Folders, file.Name())
@@ -54,6 +56,15 @@ func main() {
 
 		// send data to template
 		ctx.HTML(200, "home.html", response)
+	})
+
+	// handle request to view individual file
+	router.GET("/file/*path", func(ctx *gin.Context) {
+		// get file system path
+		path := rootPath + ctx.Param("path")
+
+		// send file with appropriate name
+		ctx.FileAttachment(path, filepath.Base(path))
 	})
 
 	// run server

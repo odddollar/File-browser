@@ -19,7 +19,11 @@
         {{end}}
     {{end}}
     {{range .Files}}
-        <div>{{.}}</div>
+        {{if eq $.URL "/folder/"}}
+            <div><a href="{{$.FileURL}}{{.}}">{{.}}</a></div>
+        {{else}}
+            <div><a href="{{$.FileURL}}/{{.}}">{{.}}</a></div>
+        {{end}}
     {{end}}
 </body>
 </html>
