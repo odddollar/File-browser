@@ -43,9 +43,11 @@ func main() {
 
 		// add relevant file and folder data to struct
 		response.Path = path
-		response.URL = ctx.Request.URL.Path
-		response.PreviousURL = strings.ReplaceAll(filepath.Dir(ctx.Request.URL.Path), "\\", "/")
-		response.FileURL = strings.Replace(ctx.Request.URL.Path, "folder", "file", 1)
+		response.URL = strings.ReplaceAll(filepath.Clean(ctx.Request.URL.String()), "\\", "/")
+		response.PreviousURL = strings.ReplaceAll(filepath.Dir(ctx.Request.URL.String()), "\\", "/")
+		response.FileURL = strings.ReplaceAll(filepath.Clean(strings.Replace(ctx.Request.URL.String(), "folder", "file", 1)), "\\", "/")
+
+		// add file and folder information to struct
 		for _, file := range files {
 			if file.IsDir() {
 				response.Folders = append(response.Folders, file.Name())

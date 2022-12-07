@@ -8,22 +8,14 @@
 </head>
 <body>
     <div><h1>{{.Path}}</h1></div>
-    {{if ne .URL "/folder/"}}
+    {{if ne .URL "/folder"}}
         <div><a href="{{.PreviousURL}}">..</a></div>
     {{end}}
     {{range .Folders}}
-        {{if eq $.URL "/folder/"}}
-            <div><a href="{{.}}">{{.}}</a></div>
-        {{else}}
-            <div><a href="{{$.URL}}/{{.}}">{{.}}</a></div>
-        {{end}}
+        <div><a href="{{$.URL}}/{{.}}">{{.}}</a></div>
     {{end}}
     {{range .Files}}
-        {{if eq $.URL "/folder/"}}
-            <div><a href="{{$.FileURL}}{{.}}">{{.}}</a></div>
-        {{else}}
-            <div><a href="{{$.FileURL}}/{{.}}">{{.}}</a></div>
-        {{end}}
+        <div><a href="{{$.FileURL}}/{{.}}">{{.}}</a></div>
     {{end}}
 </body>
 </html>
