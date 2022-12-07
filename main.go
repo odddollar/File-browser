@@ -15,8 +15,13 @@ func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("views/*")
 
-	// handle path for viewing directory
-	router.GET("/*path", func(ctx *gin.Context) {
+	// handle request to home page, redirecting to folder URL
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.Redirect(303, "/folder/")
+	})
+
+	// handle path for viewing directories
+	router.GET("/folder/*path", func(ctx *gin.Context) {
 		// get path from url and add to root path
 		path := rootPath + ctx.Param("path")
 
