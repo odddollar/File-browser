@@ -8,6 +8,7 @@ import (
 
 func main() {
 	router := gin.Default()
+	router.LoadHTMLGlob("views/*")
 
 	api := router.Group("/api")
 	api.GET("*path", func(ctx *gin.Context) {
@@ -30,6 +31,10 @@ func main() {
 		}
 
 		ctx.JSON(200, response)
+	})
+
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.HTML(200, "home.html", gin.H{})
 	})
 
 	router.Run("localhost:8080")
