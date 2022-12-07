@@ -12,16 +12,20 @@ func main() {
 
 	api := router.Group("/api")
 	api.GET("*path", func(ctx *gin.Context) {
-		files, err := os.ReadDir(ctx.Param("path")[1:])
+		path := ctx.Param("path")[1:]
+
+		files, err := os.ReadDir(path)
 		if err != nil {
 			panic(err)
 		}
 
 		var response struct {
+			Path    string   `json:"path"`
 			Folders []string `json:"folders"`
 			Files   []string `json:"files"`
 		}
 
+		response.Path = path
 		for _, file := range files {
 			if file.IsDir() {
 				response.Folders = append(response.Folders, file.Name())
