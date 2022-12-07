@@ -6,16 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const rootPath = "c:/users/sieea/documents"
+
 func main() {
 	// create router and load HTML files
 	router := gin.Default()
 	router.LoadHTMLGlob("views/*")
 
-	// create router group for handling api
-	api := router.Group("/api")
-	api.GET("*path", func(ctx *gin.Context) {
-		// get path from url
-		path := ctx.Param("path")[1:]
+	// handle path for viewing directory
+	router.GET("/*path", func(ctx *gin.Context) {
+		// get path from url and add to root path
+		path := rootPath + ctx.Param("path")
 
 		// read file path on server
 		files, err := os.ReadDir(path)
@@ -23,11 +24,11 @@ func main() {
 			panic(err)
 		}
 
-		// create variable for converting to json
+		// create variable for storing directory information
 		var response struct {
-			Path    string   `json:"path"`
-			Folders []string `json:"folders"`
-			Files   []string `json:"files"`
+			Path    string
+			Folders []string
+			Files   []string
 		}
 
 		// add relevant file and folder data to struct
@@ -40,13 +41,8 @@ func main() {
 			}
 		}
 
-		// return struct as json
-		ctx.JSON(200, response)
-	})
-
-	// host main html page
-	router.GET("/", func(ctx *gin.Context) {
-		ctx.HTML(200, "home.html", gin.H{})
+		// send data to template
+		ctx.HTML(200, "home.html", response)
 	})
 
 	// run server
