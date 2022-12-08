@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -73,16 +74,17 @@ func main() {
 		// get equivalent folder url to redirect to
 		folderURL := strings.ReplaceAll(filepath.Clean(strings.Replace(ctx.Request.URL.String(), "file", "folder", 1)), "\\", "/")
 
-		// get file from form data and handle error if no file attached
-		file, err := ctx.FormFile("file")
-		if err != nil {
-			ctx.Redirect(303, folderURL)
-			return
-		}
+		// get file(s) from form data
+		form, _ := ctx.MultipartForm()
+		files := form.File["file"]
 
-		// create path to save file to and save file
-		path := strings.ReplaceAll(filepath.Clean(rootPath+ctx.Param("path")+"/"+file.Filename), "\\", "/")
-		ctx.SaveUploadedFile(file, path)
+		// iterate through files in form
+		for _, file := range files {
+			// create path to save file to and save file
+			path := strings.ReplaceAll(filepath.Clean(rootPath+ctx.Param("path")+"/"+file.Filename), "\\", "/")
+			fmt.Println(file.Filename, path)
+			ctx.SaveUploadedFile(file, path)
+		}
 
 		// redirect back to current page
 		ctx.Redirect(303, folderURL)
