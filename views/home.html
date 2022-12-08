@@ -1,27 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-background-black-ter">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Home</title>
 </head>
 <body>
-    <div><h1>{{.Path}}</h1></div>
-    <div>
-        <form action="{{.FileURL}}" method="post" enctype="multipart/form-data">
-            <input type="file" id="file" name="file" multiple>
-            <input type="submit" value="submit">
-        </form>
+    <nav class="navbar has-background-dark" role="navigation">
+        <div class="navbar-brand">
+            <a href="/"><h1 class="navbar-item title has-text-white">Network File Browser</h1></a>
+            <a role="button" class="navbar-burger has-text-white" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-info">
+                            <strong>Login</strong>
+                        </a>
+                        <a class="button">
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <h1>{{.Path}}</h1>
+    <form action="{{.FileURL}}" method="post" enctype="multipart/form-data">
+        <input type="file" id="file" name="file" multiple>
+        <input type="submit" value="submit">
+    </form>
+    <div class="columns is-mobile is-multiline">
+        {{if ne .URL "/folder"}}
+            <div class="column"><a class="button" href="{{.PreviousURL}}">..</a></div>
+        {{end}}
+        {{range .Folders}}
+            <div class="column">
+                <a class="button is-link" href="{{$.URL}}/{{.}}"><img src="/static/folder.png">{{.}}</a>
+            </div>
+        {{end}}
+        {{range .Files}}
+            <div class="column">
+                <a class="button is-info" href="{{$.FileURL}}/{{.}}"><img src="/static/file.png">{{.}}</a>
+            </div>
+        {{end}}
     </div>
-    {{if ne .URL "/folder"}}
-        <div><a href="{{.PreviousURL}}">..</a></div>
-    {{end}}
-    {{range .Folders}}
-        <div><a href="{{$.URL}}/{{.}}">{{.}}</a></div>
-    {{end}}
-    {{range .Files}}
-        <div><a href="{{$.FileURL}}/{{.}}">{{.}}</a></div>
-    {{end}}
+    
+    <script>
+        (function() {
+            var burger = document.querySelector('.navbar-burger');
+            var menu = document.querySelector('.navbar-menu');
+            burger.addEventListener('click', function() {
+                burger.classList.toggle('is-active');
+                menu.classList.toggle('is-active');
+            });
+        })();
+    </script>
 </body>
 </html>

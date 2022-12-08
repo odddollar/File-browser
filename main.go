@@ -12,9 +12,10 @@ import (
 const rootPath = "c:/users/sieea/documents"
 
 func main() {
-	// create router and load HTML files
+	// create router and load HTML/static files
 	router := gin.Default()
 	router.LoadHTMLGlob("views/*")
+	router.Static("/static", "./static")
 
 	// handle request to home page, redirecting to folder URL
 	router.GET("/", func(ctx *gin.Context) {
