@@ -13,8 +13,9 @@ const rootPath = "c:/users/sieea/documents"
 func main() {
 	// create template
 	tmpl := template.Must(template.New("main").Funcs(template.FuncMap{
-		"join":   strings.Join,
-		"append": templateAppend,
+		"join":           strings.Join,
+		"append":         templateAppend,
+		"stripLastIndex": templateStripLastIndex,
 	}).ParseGlob("views/*.html"))
 
 	// create router and load HTML/static files
@@ -93,6 +94,10 @@ func main() {
 
 	// run server
 	router.Run("localhost:8080")
+}
+
+func templateStripLastIndex(s []string) []string {
+	return s[:len(s)-1]
 }
 
 func templateAppend(s []string, n string) []string {
