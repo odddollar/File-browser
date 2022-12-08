@@ -33,12 +33,13 @@
         </div>
     </nav>
     <div style="margin-left: 2rem;margin-right: 2rem;">
-        <h1>{{.Path}}</h1>
+        <h1 class="title is-4 has-text-white" style="margin-bottom: 1rem;margin-top: 0.8rem;">{{.Path}}</h1>
+        <hr style="margin-top: 0px;">
         <div class="columns is-mobile is-multiline">
             {{if ne (len .URL) 0}}
                 {{$temp := stripLastIndex $.URL}}
                 <div class="column">
-                    <a class="button" href="/app/{{join $temp "/"}}"></a>
+                    <a class="button" href="/app/{{join $temp "/"}}">..</a>
                 </div>
             {{end}}
             {{range .Folders}}
