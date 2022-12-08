@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -12,18 +11,24 @@ import (
 const rootPath = "c:/users/sieea/documents"
 
 func main() {
+	// create template
+	tmpl := template.Must(template.New("main").Funcs(template.FuncMap{
+		"join":   strings.Join,
+		"append": templateAppend,
+	}).ParseGlob("views/*.html"))
+
 	// create router and load HTML/static files
 	router := gin.Default()
-	router.LoadHTMLGlob("views/*")
+	router.SetHTMLTemplate(tmpl)
 	router.Static("/static", "./static")
 
-	// handle request to home page, redirecting to folder URL
+	// handle request to home page, redirecting to appropriate URL
 	router.GET("/", func(ctx *gin.Context) {
-		ctx.Redirect(303, "/folder/")
+		ctx.Redirect(303, "/app")
 	})
 
 	// handle path for viewing directories
-	router.GET("/folder/*path", func(ctx *gin.Context) {
+	router.GET("/app/*path", func(ctx *gin.Context) {
 		// get path from url and add to root path
 		path := rootPath + ctx.Param("path")
 
@@ -35,19 +40,15 @@ func main() {
 
 		// create variable for storing directory information
 		var response struct {
-			URL         string
-			PreviousURL string
-			FileURL     string
-			Path        string
-			Folders     []string
-			Files       []string
+			URL     []string
+			Path    string
+			Folders []string
+			Files   []string
 		}
 
-		// add relevant file and folder data to struct
+		// add path and URL data to struct
 		response.Path = path
-		response.URL = strings.ReplaceAll(filepath.Clean(ctx.Request.URL.String()), "\\", "/")
-		response.PreviousURL = strings.ReplaceAll(filepath.Dir(ctx.Request.URL.String()), "\\", "/")
-		response.FileURL = strings.ReplaceAll(filepath.Clean(strings.Replace(ctx.Request.URL.String(), "folder", "file", 1)), "\\", "/")
+		response.URL = deleteEmpty(strings.Split(strings.TrimPrefix(ctx.Request.URL.String(), "/app"), "/"))
 
 		// add file and folder information to struct
 		for _, file := range files {
@@ -62,35 +63,48 @@ func main() {
 		ctx.HTML(200, "home.html", response)
 	})
 
-	// handle request to view individual file
-	router.GET("/file/*path", func(ctx *gin.Context) {
-		// get file system path
-		path := rootPath + ctx.Param("path")
+	// // handle request to view individual file
+	// router.GET("/file/*path", func(ctx *gin.Context) {
+	// 	// get file system path
+	// 	path := rootPath + ctx.Param("path")
 
-		// send file with appropriate name
-		ctx.FileAttachment(path, filepath.Base(path))
-	})
+	// 	// send file with appropriate name
+	// 	ctx.FileAttachment(path, filepath.Base(path))
+	// })
 
-	router.POST("/file/*path", func(ctx *gin.Context) {
-		// get equivalent folder url to redirect to
-		folderURL := strings.ReplaceAll(filepath.Clean(strings.Replace(ctx.Request.URL.String(), "file", "folder", 1)), "\\", "/")
+	// router.POST("/file/*path", func(ctx *gin.Context) {
+	// 	// get equivalent folder url to redirect to
+	// 	folderURL := strings.ReplaceAll(filepath.Clean(strings.Replace(ctx.Request.URL.String(), "file", "folder", 1)), "\\", "/")
 
-		// get file(s) from form data
-		form, _ := ctx.MultipartForm()
-		files := form.File["file"]
+	// 	// get file(s) from form data
+	// 	form, _ := ctx.MultipartForm()
+	// 	files := form.File["file"]
 
-		// iterate through files in form
-		for _, file := range files {
-			// create path to save file to and save file
-			path := strings.ReplaceAll(filepath.Clean(rootPath+ctx.Param("path")+"/"+file.Filename), "\\", "/")
-			fmt.Println(file.Filename, path)
-			ctx.SaveUploadedFile(file, path)
-		}
+	// 	// iterate through files in form
+	// 	for _, file := range files {
+	// 		// create path to save file to and save file
+	// 		path := strings.ReplaceAll(filepath.Clean(rootPath+ctx.Param("path")+"/"+file.Filename), "\\", "/")
+	// 		ctx.SaveUploadedFile(file, path)
+	// 	}
 
-		// redirect back to current page
-		ctx.Redirect(303, folderURL)
-	})
+	// 	// redirect back to current page
+	// 	ctx.Redirect(303, folderURL)
+	// })
 
 	// run server
 	router.Run("localhost:8080")
+}
+
+func templateAppend(s []string, n string) []string {
+	return append(s, n)
+}
+
+func deleteEmpty(s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
 }
