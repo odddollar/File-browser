@@ -69,6 +69,25 @@ func main() {
 		ctx.FileAttachment(path, filepath.Base(path))
 	})
 
+	router.POST("/file/*path", func(ctx *gin.Context) {
+		// get equivalent folder url to redirect to
+		folderURL := strings.ReplaceAll(filepath.Clean(strings.Replace(ctx.Request.URL.String(), "file", "folder", 1)), "\\", "/")
+
+		// get file from form data and handle error if no file attached
+		file, err := ctx.FormFile("file")
+		if err != nil {
+			ctx.Redirect(303, folderURL)
+			return
+		}
+
+		// create path to save file to and save file
+		path := strings.ReplaceAll(filepath.Clean(rootPath+ctx.Param("path")+"/"+file.Filename), "\\", "/")
+		ctx.SaveUploadedFile(file, path)
+
+		// redirect back to current page
+		ctx.Redirect(303, folderURL)
+	})
+
 	// run server
 	router.Run("localhost:8080")
 }
