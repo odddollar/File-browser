@@ -32,27 +32,28 @@
             </div>
         </div>
     </nav>
-    <h1>{{.Path}}</h1>
+    <div style="margin-left: 2rem;margin-right: 2rem;">
+        <h1>{{.Path}}</h1>
+        <div class="columns is-mobile is-multiline">
+            {{if ne .URL "/folder"}}
+                <div class="column"><a class="button" href="{{.PreviousURL}}">..</a></div>
+            {{end}}
+            {{range .Folders}}
+                <div class="column">
+                    <a class="button is-link" href="{{$.URL}}/{{.}}"><img src="/static/folder.png">{{.}}</a>
+                </div>
+            {{end}}
+            {{range .Files}}
+                <div class="column">
+                    <a class="button is-info" href="{{$.FileURL}}/{{.}}"><img src="/static/file.png">{{.}}</a>
+                </div>
+            {{end}}
+        </div>
+    </div>    
     <form action="{{.FileURL}}" method="post" enctype="multipart/form-data">
         <input type="file" id="file" name="file" multiple>
         <input type="submit" value="submit">
     </form>
-    <div class="columns is-mobile is-multiline">
-        {{if ne .URL "/folder"}}
-            <div class="column"><a class="button" href="{{.PreviousURL}}">..</a></div>
-        {{end}}
-        {{range .Folders}}
-            <div class="column">
-                <a class="button is-link" href="{{$.URL}}/{{.}}"><img src="/static/folder.png">{{.}}</a>
-            </div>
-        {{end}}
-        {{range .Files}}
-            <div class="column">
-                <a class="button is-info" href="{{$.FileURL}}/{{.}}"><img src="/static/file.png">{{.}}</a>
-            </div>
-        {{end}}
-    </div>
-    
     <script>
         (function() {
             var burger = document.querySelector('.navbar-burger');
