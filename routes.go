@@ -80,3 +80,23 @@ func viewDirectory(ctx *gin.Context, path string) {
 	// Send data to template
 	ctx.HTML(200, "home.html", response)
 }
+
+// Upload file to server and redirect to original page
+func uploadFile(ctx *gin.Context) {
+	// Get list of files in form data
+	form, _ := ctx.MultipartForm()
+	files := form.File["file"]
+
+	// Process each file
+	for _, file := range files {
+		// Create save path location
+		path := rootPath + ctx.Param("path") + "/" + file.Filename
+		path = strings.ReplaceAll(path, "//", "/")
+
+		// Save current file
+		ctx.SaveUploadedFile(file, path)
+	}
+
+	// Redirect back to original page
+	ctx.Redirect(303, strings.Replace(ctx.Request.URL.String(), "file", "app", 1))
+}

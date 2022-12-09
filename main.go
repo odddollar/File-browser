@@ -55,6 +55,9 @@ func main() {
 	// Handle path for directories and files
 	router.GET("/app/*path", dirOrFile)
 
+	// Handle postback for uploading files
+	router.POST("/file/*path", uploadFile)
+
 	// Add route for 404
 	router.NoRoute(notFound)
 
