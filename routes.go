@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -19,12 +20,33 @@ func notFound(ctx *gin.Context) {
 	})
 }
 
-// Return HTML template containing contents of given path
-func viewDirectory(ctx *gin.Context) {
+// Check if request if for directory or file, handing context to relevant function
+func dirOrFile(ctx *gin.Context) {
 	// Get path from url and add to root path
 	path := rootPath + ctx.Param("path")
 	path = strings.ReplaceAll(path, "//", "/")
 
+	// Get path information
+	info, err := os.Stat(path)
+	if err != nil {
+		panic(err)
+	}
+
+	// Run handler function for directory or path
+	if info.IsDir() {
+		viewDirectory(ctx, path)
+	} else {
+		viewFile(ctx, path)
+	}
+}
+
+// Download file for viewing
+func viewFile(ctx *gin.Context, path string) {
+	ctx.FileAttachment(path, filepath.Base(path))
+}
+
+// Return HTML template containing contents of given path
+func viewDirectory(ctx *gin.Context, path string) {
 	// Read file path on server
 	files, err := os.ReadDir(path)
 

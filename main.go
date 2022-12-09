@@ -52,8 +52,8 @@ func main() {
 	// Handle request to home page
 	router.GET("/", appRedirect)
 
-	// Handle path for viewing directories
-	router.GET("/app/*path", viewDirectory)
+	// Handle path for directories and files
+	router.GET("/app/*path", dirOrFile)
 
 	// Add route for 404
 	router.NoRoute(notFound)
