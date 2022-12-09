@@ -23,6 +23,7 @@ func notFound(ctx *gin.Context) {
 func viewDirectory(ctx *gin.Context) {
 	// Get path from url and add to root path
 	path := rootPath + ctx.Param("path")
+	path = strings.ReplaceAll(path, "//", "/")
 
 	// Read file path on server
 	files, err := os.ReadDir(path)
