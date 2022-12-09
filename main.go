@@ -1,7 +1,9 @@
 package main
 
 import (
+	"embed"
 	"html/template"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -9,18 +11,24 @@ import (
 
 const rootPath = "c:/users/sieea/documents"
 
+//go:embed views
+var fViews embed.FS
+
+//go:embed static
+var fStatic embed.FS
+
 func main() {
 	// create template
 	tmpl := template.Must(template.New("").Funcs(template.FuncMap{
 		"join":           strings.Join,
 		"append":         templateAppend,
 		"stripLastIndex": templateStripLastIndex,
-	}).ParseGlob("views/*.html"))
+	}).ParseFS(fViews, "views/*.html"))
 
 	// create router and load HTML/static files
 	router := gin.Default()
 	router.SetHTMLTemplate(tmpl)
-	router.Static("/static", "./static")
+	router.StaticFS("/static", http.FS(subStatic(fStatic)))
 
 	// handle request to home page, redirecting to appropriate URL
 	router.GET("/", appRedirect)

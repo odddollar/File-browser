@@ -1,5 +1,10 @@
 package main
 
+import (
+	"embed"
+	"io/fs"
+)
+
 func templateStripLastIndex(s []string) []string {
 	return s[:len(s)-1]
 }
@@ -16,4 +21,9 @@ func deleteEmpty(s []string) []string {
 		}
 	}
 	return r
+}
+
+func subStatic(f embed.FS) fs.FS {
+	t, _ := fs.Sub(f, "static")
+	return t
 }
