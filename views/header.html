@@ -5,6 +5,10 @@
     .action-image {
         margin-right: 0.3rem;
     }
+    .github-link {
+        margin-top: 0.5rem;
+        margin-right: 0.5rem;
+    }
 </style>
 <nav class="navbar has-background-dark" role="navigation">
     <div class="navbar-brand">
@@ -17,6 +21,12 @@
     </div>
     <div class="navbar-menu">
         <div class="navbar-start">
+            <div class="navbar-item">
+                {{template "folder.html"}}
+            </div>
+            <div class="navbar-item">
+                {{template "file.html"}}
+            </div>
             <div class="navbar-item">
                 {{template "upload.html" .}}
             </div>
@@ -31,6 +41,11 @@
                         <strong>Logout</strong>
                     </a>
                 </div>
+            </div>
+            <div class="navbar-item">
+                <a class="github-link" href="https://github.com/odddollar" target="_blank">
+                    <img src="/static/github.png" alt="Github">
+                </a>
             </div>
         </div>
     </div>
