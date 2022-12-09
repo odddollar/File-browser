@@ -2,14 +2,15 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"strings"
 
+	"github.com/akamensky/argparse"
 	"github.com/gin-gonic/gin"
 )
-
-const rootPath = "c:/users/sieea/documents"
 
 //go:embed views
 var fViews embed.FS
@@ -17,7 +18,25 @@ var fViews embed.FS
 //go:embed static
 var fStatic embed.FS
 
+// Global variable to keep track of root path
+var rootPath string
+
 func main() {
+	// Setup command line arguments
+	parser := argparse.NewParser("Network File Browser", "View file system contents over a network")
+	port := parser.Int("p", "port", &argparse.Options{Default: 8080, Help: "Port to host webserver on"})
+	rP := parser.String("v", "path", &argparse.Options{Required: true, Help: "Root path to host"})
+
+	// Run command line parser
+	err := parser.Parse(os.Args)
+	if err != nil {
+		fmt.Println(parser.Usage(err))
+		return
+	}
+
+	// Set root path to CLI value
+	rootPath = *rP
+
 	// Create template
 	tmpl := template.Must(template.New("").Funcs(template.FuncMap{
 		"join":           strings.Join,
@@ -40,5 +59,5 @@ func main() {
 	router.NoRoute(notFound)
 
 	// Run server
-	router.Run("localhost:8080")
+	router.Run(fmt.Sprintf("localhost:%d", *port))
 }
