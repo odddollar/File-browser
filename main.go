@@ -36,7 +36,8 @@ func main() {
 		// read file path on server
 		files, err := os.ReadDir(path)
 		if err != nil {
-			panic(err)
+			notFound(ctx)
+			return
 		}
 
 		// create variable for storing directory information
@@ -92,8 +93,17 @@ func main() {
 	// 	ctx.Redirect(303, folderURL)
 	// })
 
+	// add route for 404
+	router.NoRoute(notFound)
+
 	// run server
 	router.Run("localhost:8080")
+}
+
+func notFound(ctx *gin.Context) {
+	ctx.HTML(404, "404.html", gin.H{
+		"Message": "\"" + ctx.Request.Host + ctx.Request.URL.Path + "\" not found",
+	})
 }
 
 func templateStripLastIndex(s []string) []string {

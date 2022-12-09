@@ -5,33 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <title>Home</title>
+    <title>Network File Browser</title>
 </head>
 <body>
-    <nav class="navbar has-background-dark" role="navigation">
-        <div class="navbar-brand">
-            <a href="/"><h1 class="navbar-item title has-text-white">Network File Browser</h1></a>
-            <a role="button" class="navbar-burger has-text-white" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div class="navbar-menu">
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-info">
-                            <strong>Login</strong>
-                        </a>
-                        <a class="button">
-                            <strong>Logout</strong>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    {{template "header.html"}}
     <div style="margin-left: 2rem;margin-right: 2rem;">
         <h1 class="title is-4 has-text-white" style="margin-bottom: 1rem;margin-top: 0.8rem;">{{.Path}}</h1>
         <hr style="margin-top: 0px;">
