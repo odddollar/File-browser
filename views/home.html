@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/bulma.min.css">
     <title>Network File Browser</title>
+    <style>
+        .directory-box {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            padding-left: 1rem;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
     {{template "header.html"}}
@@ -17,7 +26,7 @@
                 {{$temp := stripLastIndex $.URL}}
                 <div class="column is-2">
                     <a href="/app/{{join $temp "/"}}">
-                        <img class="image is-24x24" src="/static/back.png">
+                        <img class="image is-48x48" src="/static/back.png">
                     </a>
                 </div>
             {{end}}
@@ -25,8 +34,8 @@
                 {{$temp := append $.URL .}}
                 <div class="column is-2">
                     <a href="/app/{{join $temp "/"}}">
-                        <div class="has-text-centered has-text-white">
-                            <img class="image is-24x24" src="/static/folder.png">
+                        <div class="has-text-white has-background-info directory-box">
+                            <img class="image is-48x48" style="margin-right: 1rem;" src="/static/folder.png">
                             {{.}}
                         </div>
                     </a>
@@ -35,9 +44,9 @@
             {{range .Files}}
                 {{$temp := append $.URL .}}
                 <div class="column is-2">
-                    <a class="has-text-white" href="/app/{{join $temp "/"}}">
-                        <div class="has-text-centered">
-                            <img class="image is-24x24" src="/static/file.png">
+                    <a href="/app/{{join $temp "/"}}">
+                        <div class="has-text-white has-background-link directory-box">
+                            <img class="image is-48x48" style="margin-right: 1rem;" src="/static/file.png">
                             {{.}}
                         </div>
                     </a>
