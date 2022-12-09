@@ -18,27 +18,27 @@ var fViews embed.FS
 var fStatic embed.FS
 
 func main() {
-	// create template
+	// Create template
 	tmpl := template.Must(template.New("").Funcs(template.FuncMap{
 		"join":           strings.Join,
 		"append":         templateAppend,
 		"stripLastIndex": templateStripLastIndex,
 	}).ParseFS(fViews, "views/*.html"))
 
-	// create router and load HTML/static files
+	// Create router and load HTML/static files
 	router := gin.Default()
 	router.SetHTMLTemplate(tmpl)
 	router.StaticFS("/static", http.FS(subStatic(fStatic)))
 
-	// handle request to home page, redirecting to appropriate URL
+	// Handle request to home page
 	router.GET("/", appRedirect)
 
-	// handle path for viewing directories
+	// Handle path for viewing directories
 	router.GET("/app/*path", viewDirectory)
 
-	// add route for 404
+	// Add route for 404
 	router.NoRoute(notFound)
 
-	// run server
+	// Run server
 	router.Run("localhost:8080")
 }

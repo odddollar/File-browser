@@ -7,28 +7,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Redirect from / home page to /app
 func appRedirect(ctx *gin.Context) {
 	ctx.Redirect(303, "/app")
 }
 
+// Return error 404 with appropriate template
 func notFound(ctx *gin.Context) {
 	ctx.HTML(404, "404.html", gin.H{
 		"Message": "\"" + ctx.Request.Host + ctx.Request.URL.Path + "\" not found",
 	})
 }
 
+// Return HTML template containing contents of given path
 func viewDirectory(ctx *gin.Context) {
-	// get path from url and add to root path
+	// Get path from url and add to root path
 	path := rootPath + ctx.Param("path")
 
-	// read file path on server
+	// Read file path on server
 	files, err := os.ReadDir(path)
+
+	// Display 404 page if path not found
 	if err != nil {
 		notFound(ctx)
 		return
 	}
 
-	// create variable for storing directory information
+	// Create variable for storing directory information
 	var response struct {
 		URL     []string
 		Path    string
@@ -36,11 +41,11 @@ func viewDirectory(ctx *gin.Context) {
 		Files   []string
 	}
 
-	// add path and URL data to struct
+	// Add path and URL data to struct
 	response.Path = path
 	response.URL = deleteEmpty(strings.Split(strings.TrimPrefix(ctx.Request.URL.String(), "/app"), "/"))
 
-	// add file and folder information to struct
+	// Add file and folder information to struct
 	for _, file := range files {
 		if file.IsDir() {
 			response.Folders = append(response.Folders, file.Name())
@@ -49,6 +54,6 @@ func viewDirectory(ctx *gin.Context) {
 		}
 	}
 
-	// send data to template
+	// Send data to template
 	ctx.HTML(200, "home.html", response)
 }
