@@ -12,23 +12,35 @@
     <div style="margin-left: 2rem;margin-right: 2rem;">
         <h1 class="title is-4 has-text-white" style="margin-bottom: 1rem;margin-top: 0.8rem;">{{.Path}}</h1>
         <hr style="margin-top: 0px;">
-        <div class="columns is-mobile is-multiline">
+        <div class="columns">
             {{if ne (len .URL) 0}}
                 {{$temp := stripLastIndex $.URL}}
                 <div class="column">
-                    <a class="button" href="/app/{{join $temp "/"}}">..</a>
+                    <a href="/app/{{join $temp "/"}}">
+                        <img class="image is-24x24" src="/static/back.png">
+                    </a>
                 </div>
             {{end}}
             {{range .Folders}}
                 {{$temp := append $.URL .}}
                 <div class="column">
-                    <a class="button is-link" href="/app/{{join $temp "/"}}"><img src="/static/folder.png">{{.}}</a>
+                    <div>
+                        <a class="has-text-white" href="/app/{{join $temp "/"}}">
+                            <img class="image is-24x24" src="/static/folder.png">
+                            {{.}}
+                        </a>
+                    </div>
                 </div>
             {{end}}
             {{range .Files}}
                 {{$temp := append $.URL .}}
                 <div class="column">
-                    <a class="button is-info" href="/app/{{join $temp "/"}}"><img src="/static/file.png">{{.}}</a>
+                    <div>
+                        <a class="has-text-white" href="/app/{{join $temp "/"}}">
+                            <img class="image is-24x24" src="/static/file.png">
+                            {{.}}
+                        </a>
+                    </div>
                 </div>
             {{end}}
         </div>
