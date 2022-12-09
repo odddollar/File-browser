@@ -12,10 +12,10 @@
     <div style="margin-left: 2rem;margin-right: 2rem;">
         <h1 class="title is-4 has-text-white" style="margin-bottom: 1rem;margin-top: 0.8rem;">{{.Path}}</h1>
         <hr style="margin-top: 0px;">
-        <div class="columns">
+        <div class="columns is-multiline is-tablet">
             {{if ne (len .URL) 0}}
                 {{$temp := stripLastIndex $.URL}}
-                <div class="column">
+                <div class="column is-2">
                     <a href="/app/{{join $temp "/"}}">
                         <img class="image is-24x24" src="/static/back.png">
                     </a>
@@ -23,24 +23,24 @@
             {{end}}
             {{range .Folders}}
                 {{$temp := append $.URL .}}
-                <div class="column">
-                    <div>
-                        <a class="has-text-white" href="/app/{{join $temp "/"}}">
+                <div class="column is-2">
+                    <a href="/app/{{join $temp "/"}}">
+                        <div class="has-text-centered has-text-white">
                             <img class="image is-24x24" src="/static/folder.png">
                             {{.}}
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             {{end}}
             {{range .Files}}
                 {{$temp := append $.URL .}}
-                <div class="column">
-                    <div>
-                        <a class="has-text-white" href="/app/{{join $temp "/"}}">
+                <div class="column is-2">
+                    <a class="has-text-white" href="/app/{{join $temp "/"}}">
+                        <div class="has-text-centered">
                             <img class="image is-24x24" src="/static/file.png">
                             {{.}}
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             {{end}}
         </div>
