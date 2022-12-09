@@ -1,0 +1,14 @@
+<div class="file is-dark">
+    <label class="file-label">
+        <input class="file-input" type="file" name="file" id="file">
+        <span class="file-cta">
+            <img class="action-image" src="/static/upload.png">
+            <span class="file-label">Upload</span>
+        </span>
+    </label>
+</div>
+<script>
+    document.getElementById("file").onchange = function() {
+        console.log("File submitted");
+    };
+</script>

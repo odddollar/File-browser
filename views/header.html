@@ -2,6 +2,9 @@
     .navbar-burger {
         margin-top: 0.4rem;
     }
+    .action-image {
+        margin-right: 0.3rem;
+    }
 </style>
 <nav class="navbar has-background-dark" role="navigation">
     <div class="navbar-brand">
@@ -13,6 +16,11 @@
         </a>
     </div>
     <div class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item">
+                {{template "upload.html"}}
+            </div>
+        </div>
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
@@ -27,3 +35,13 @@
         </div>
     </div>
 </nav>
+<script>
+    (function() {
+        var burger = document.querySelector('.navbar-burger');
+        var menu = document.querySelector('.navbar-menu');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            menu.classList.toggle('is-active');
+        });
+    })();
+</script>
