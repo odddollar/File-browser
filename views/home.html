@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="/static/bulma.min.css">
     <title>Network File Browser</title>
     <style>
+        .body {
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+        #path-title {
+            margin-bottom: 1rem;
+            margin-top: 0.8rem;
+        }
+        hr {
+            margin-top: 0px;
+        }
         .directory-box {
             display: flex;
             align-items: center;
@@ -14,19 +25,29 @@
             padding-left: 1rem;
             border-radius: 4px;
         }
+        .directory-box-icon {
+            margin-right: 1rem;
+        }
+        .back-arrow {
+            display: flex;
+            justify-content: center;
+            padding-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
     {{template "header.html"}}
-    <div style="margin-left: 2rem;margin-right: 2rem;">
-        <h1 class="title is-4 has-text-white" style="margin-bottom: 1rem;margin-top: 0.8rem;">{{.Path}}</h1>
-        <hr style="margin-top: 0px;">
+    <div class="body">
+        <h1 class="title is-4 has-text-white" id="path-title">{{.Path}}</h1>
+        <hr>
         <div class="columns is-multiline is-tablet">
             {{if ne (len .URL) 0}}
                 {{$temp := stripLastIndex $.URL}}
                 <div class="column is-2">
                     <a href="/app/{{join $temp "/"}}">
-                        <img class="image is-48x48" src="/static/back.png">
+                        <div class="back-arrow">
+                            <img class="image is-48x48" src="/static/back.png">
+                        </div>
                     </a>
                 </div>
             {{end}}
@@ -35,7 +56,7 @@
                 <div class="column is-2">
                     <a href="/app/{{join $temp "/"}}">
                         <div class="has-text-white has-background-info directory-box">
-                            <img class="image is-48x48" style="margin-right: 1rem;" src="/static/folder.png">
+                            <img class="image is-48x48 directory-box-icon" src="/static/folder.png">
                             {{.}}
                         </div>
                     </a>
@@ -46,7 +67,7 @@
                 <div class="column is-2">
                     <a href="/app/{{join $temp "/"}}">
                         <div class="has-text-white has-background-link directory-box">
-                            <img class="image is-48x48" style="margin-right: 1rem;" src="/static/file.png">
+                            <img class="image is-48x48 directory-box-icon" src="/static/file.png">
                             {{.}}
                         </div>
                     </a>
