@@ -1,1 +1,15 @@
-<h1 class="has-text-white">New folder</h1>
+<button class="button is-dark has-text-white" id="new-folder">
+    <img class="action-image" src="/static/new-folder.png">
+    New folder
+</button> 
+<script>
+    document.getElementById("new-folder").onclick = () => {
+        let foldername = prompt("New folder name:", "New folder");
+
+        if (foldername == "") {
+            return;
+        }
+
+        console.log(foldername);
+    };
+</script>

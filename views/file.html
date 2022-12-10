@@ -1,1 +1,15 @@
-<h1 class="has-text-white">New file</h1>
+<button class="button is-dark has-text-white" id="new-file">
+    <img class="action-image" src="/static/new-file.png">
+    New file
+</button> 
+<script>
+    document.getElementById("new-file").onclick = () => {
+        let filename = prompt("New file name:", "New file.txt");
+
+        if (filename == "") {
+            return;
+        }
+
+        console.log(filename);
+    };
+</script>
