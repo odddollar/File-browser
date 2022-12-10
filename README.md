@@ -47,3 +47,7 @@ Developed on Windows, but should work on Linux and Mac. I've tested with WSL2 an
 **LIMITATION**: Due to the server-side-rendered nature of this program, when uploading files or creating a new file/folder through the web interface, any existing item with the same name (in that directory) will be overwritten without prompt. I'm new to web development so don't know an easy way to change this.
 
 **INSPIRATION**: Inspired by the amazing [Filebrowser](https://github.com/filebrowser/filebrowser) program.
+
+## Screenshots
+
+![Home](screenshots/home.png)
