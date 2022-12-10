@@ -2,14 +2,22 @@
     <img class="action-image" src="/static/new-folder.png">
     New folder
 </button> 
+<form action="/new/folder/{{join . "/"}}" method="post" enctype="application/x-www-form-urlencoded" id="new-folder-form" hidden>
+    <input type="text" id="new-folder-name" name="new-folder-name">
+</form>
 <script>
+    // Add event handler
     document.getElementById("new-folder").onclick = () => {
+        // Get input from user
         let foldername = prompt("New folder name:", "New folder");
-
         if (foldername == "") {
             return;
         }
 
-        console.log(foldername);
+        // Get hidden form, set input value then submit
+        let t = document.getElementById("new-folder-form");
+        let i = document.getElementById("new-folder-name");
+        i.value = foldername;
+        t.submit();
     };
 </script>

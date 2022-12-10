@@ -58,6 +58,12 @@ func main() {
 	// Handle postback for uploading files
 	router.POST("/file/*path", uploadFile)
 
+	// Handle postback for creating new folders
+	router.POST("/new/folder/*path", createNewFolder)
+
+	// Handle postback for creating new files
+	router.POST("/new/file/*path", createNewFile)
+
 	// Add route for 404
 	router.NoRoute(notFound)
 

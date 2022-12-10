@@ -100,3 +100,35 @@ func uploadFile(ctx *gin.Context) {
 	// Redirect back to original page
 	ctx.Redirect(303, strings.Replace(ctx.Request.URL.String(), "file", "app", 1))
 }
+
+// Create new folder on server and redirect to original page
+func createNewFolder(ctx *gin.Context) {
+	// Create full new folder path
+	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-folder-name")
+	path = strings.ReplaceAll(path, "//", "/")
+
+	// Make path with set permissions
+	err := os.Mkdir(path, 0755)
+	if err != nil {
+		panic(err)
+	}
+
+	// Redirect back to original page
+	ctx.Redirect(303, "/app"+ctx.Param("path"))
+}
+
+// Create new file on server and redirect to original page
+func createNewFile(ctx *gin.Context) {
+	// Create full new file path
+	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-file-name")
+	path = strings.ReplaceAll(path, "//", "/")
+
+	// Make file with set permissions
+	err := os.WriteFile(path, []byte(""), 0755)
+	if err != nil {
+		panic(err)
+	}
+
+	// Redirect back to original page
+	ctx.Redirect(303, "/app"+ctx.Param("path"))
+}
