@@ -66,7 +66,7 @@ func viewDirectory(ctx *gin.Context, path string) {
 
 	// Add path and URL data to struct
 	response.Path = path
-	response.URL = deleteEmpty(strings.Split(strings.TrimPrefix(ctx.Request.URL.String(), "/app"), "/"))
+	response.URL = deleteEmpty(strings.Split(ctx.Param("path"), "/"))
 
 	// Add file and folder information to struct
 	for _, file := range files {
@@ -98,7 +98,7 @@ func uploadFile(ctx *gin.Context) {
 	}
 
 	// Redirect back to original page
-	ctx.Redirect(303, strings.Replace(ctx.Request.URL.String(), "file", "app", 1))
+	ctx.Redirect(303, "/app"+ctx.Param("path"))
 }
 
 // Create new folder on server and redirect to original page
