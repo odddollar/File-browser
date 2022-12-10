@@ -24,6 +24,7 @@ var rootPath string
 func main() {
 	// Setup command line arguments
 	parser := argparse.NewParser("Network File Browser", "View file system contents over a network")
+	ginMode := parser.Flag("d", "dev", &argparse.Options{Default: false, Help: "Run Gin framework in debug/dev mode"})
 	port := parser.Int("p", "port", &argparse.Options{Default: 8080, Help: "Port to host webserver on"})
 	rP := parser.String("v", "path", &argparse.Options{Required: true, Help: "Root path to host"})
 
@@ -43,6 +44,11 @@ func main() {
 		"append":         templateAppend,
 		"stripLastIndex": templateStripLastIndex,
 	}).ParseFS(fViews, "views/*.html"))
+
+	// Set release or debug mode
+	if !(*ginMode) {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
 	// Create router and load HTML/static files
 	router := gin.Default()
