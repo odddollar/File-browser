@@ -55,14 +55,22 @@ func main() {
 	// Handle path for directories and files
 	router.GET("/app/*path", dirOrFile)
 
-	// Handle postback for uploading files
-	router.POST("/file/*path", uploadFile)
+	// Route group for handling files
+	file := router.Group("/file")
+	{
+		// Handle postback for uploading files
+		file.POST("/*path", uploadFile)
+	}
 
-	// Handle postback for creating new folders
-	router.POST("/new/folder/*path", createNewFolder)
+	// Router group for creating new items
+	new := router.Group("/new")
+	{
+		// Handle postback for creating new folders
+		new.POST("/folder/*path", createNewFolder)
 
-	// Handle postback for creating new files
-	router.POST("/new/file/*path", createNewFile)
+		// Handle postback for creating new files
+		new.POST("/file/*path", createNewFile)
+	}
 
 	// Add route for 404
 	router.NoRoute(notFound)
