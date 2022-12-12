@@ -40,9 +40,9 @@ func dirOrFile(ctx *gin.Context) {
 	}
 }
 
-// Download file for viewing
+// View file with text editor
 func viewFile(ctx *gin.Context, path string) {
-	ctx.FileAttachment(path, filepath.Base(path))
+
 }
 
 // Return HTML template containing contents of given path
@@ -79,6 +79,16 @@ func viewDirectory(ctx *gin.Context, path string) {
 
 	// Send data to template
 	ctx.HTML(200, "home.html", response)
+}
+
+// Download file from given path
+func downloadFile(ctx *gin.Context) {
+	// Create path to file
+	path := rootPath + ctx.Param("path")
+	path = strings.ReplaceAll(path, "//", "/")
+
+	// Send file as attachment
+	ctx.FileAttachment(path, filepath.Base(path))
 }
 
 // Upload file to server and redirect to original page

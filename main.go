@@ -61,9 +61,12 @@ func main() {
 	// Handle path for directories and files
 	router.GET("/app/*path", dirOrFile)
 
-	// Route group for handling files
+	// Router group for handling files
 	file := router.Group("/file")
 	{
+		// Handle downloading files
+		file.GET("/*path", downloadFile)
+
 		// Handle postback for uploading files
 		file.POST("/*path", uploadFile)
 	}
