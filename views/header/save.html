@@ -2,3 +2,8 @@
     <img class="action-image image is-32x32" src="/static/save.png">
     Save
 </button> 
+<script>
+    document.getElementById("save-file").onclick = () => {
+        document.getElementById("file-content-form").submit();
+    }
+</script>

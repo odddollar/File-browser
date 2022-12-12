@@ -109,14 +109,28 @@ func uploadFile(ctx *gin.Context) {
 	form, _ := ctx.MultipartForm()
 	files := form.File["file"]
 
-	// Process each file
-	for _, file := range files {
-		// Create save path location
-		path := rootPath + ctx.Param("path") + "/" + file.Filename
-		path = strings.ReplaceAll(path, "//", "/")
+	// If the length of "files" is 0, then the frontend sent text
+	// rather then a file
+	if len(files) == 0 {
+		// Get contents and path of file
+		fileContent := form.Value["file"][0]
+		path := rootPath + ctx.Param("path")
 
-		// Save current file
-		ctx.SaveUploadedFile(file, path)
+		// Write new contents to file
+		err := os.WriteFile(path, []byte(fileContent), 0755)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		// Process each file
+		for _, file := range files {
+			// Create save path location
+			path := rootPath + ctx.Param("path") + "/" + file.Filename
+			path = strings.ReplaceAll(path, "//", "/")
+
+			// Save current file
+			ctx.SaveUploadedFile(file, path)
+		}
 	}
 
 	// Redirect back to original page
