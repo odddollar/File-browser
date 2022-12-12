@@ -2,6 +2,12 @@
 
 View and interact with a file system over a network with Network File Browser. A single binary file is all you need to host an entire directory through a beautiful web interface; all dependencies are included in the binary. Run it on a storage server to view and upload/download files without needing to install anything on a client device.
 
+**PLEASE NOTE: This program was developed by an amateur programmer with very little web development experience. As such it contains janky code and may be prone to breaking in almost every way. Please be advised.**
+
+**LIMITATION**: Due to the server-side-rendered nature of this program, when uploading files or creating a new file/folder through the web interface, any existing item with the same name (in that directory) will be overwritten without prompt. I'm new to web development so don't know an easy way to change this.
+
+**INSPIRATION**: Inspired by the amazing [Filebrowser](https://github.com/filebrowser/filebrowser) program.
+
 ## Features
 
 - View file and folder structure
@@ -43,10 +49,6 @@ Developed on Windows, but should work on Linux and Mac. I've tested with WSL2 an
   - [Bulma](https://bulma.io) providing styling
   - Vanilla JavaScript for the odd bit of frontend logic
 - Go's Embed library to package all static files to a single binary
-
-**LIMITATION**: Due to the server-side-rendered nature of this program, when uploading files or creating a new file/folder through the web interface, any existing item with the same name (in that directory) will be overwritten without prompt. I'm new to web development so don't know an easy way to change this.
-
-**INSPIRATION**: Inspired by the amazing [Filebrowser](https://github.com/filebrowser/filebrowser) program.
 
 ## Screenshots
 
