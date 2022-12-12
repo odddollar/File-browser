@@ -20,15 +20,24 @@
     </div>
     <div class="navbar-menu">
         <div class="navbar-start">
-            <div class="navbar-item">
-                {{template "folder.html" .}}
-            </div>
-            <div class="navbar-item">
-                {{template "file.html" .}}
-            </div>
-            <div class="navbar-item">
-                {{template "upload.html" .}}
-            </div>
+            {{if (isFile .)}}
+                <div class="navbar-item">
+                    Save
+                </div>
+                <div class="navbar-item">
+                    Download
+                </div>
+            {{else}}
+                <div class="navbar-item">
+                    {{template "folder.html" .}}
+                </div>
+                <div class="navbar-item">
+                    {{template "file.html" .}}
+                </div>
+                <div class="navbar-item">
+                    {{template "upload.html" .}}
+                </div>
+            {{end}}
         </div>
         <div class="navbar-end">
             <div class="navbar-item">

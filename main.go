@@ -43,6 +43,7 @@ func main() {
 		"join":           strings.Join,
 		"append":         templateAppend,
 		"stripLastIndex": templateStripLastIndex,
+		"isFile":         templateIsFile,
 	}).ParseFS(fViews, "views/*.html", "views/*/*.html"))
 
 	// Set release or debug mode
