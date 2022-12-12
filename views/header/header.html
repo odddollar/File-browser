@@ -5,7 +5,7 @@
     .action-image {
         margin-right: 0.3rem;
     }
-    .github-link {
+    .navbar-spacing {
         margin-right: 0.5rem;
     }
 </style>
@@ -18,7 +18,7 @@
             <span aria-hidden="true"></span>
         </a>
     </div>
-    <div class="navbar-menu">
+    <div class="navbar-menu has-background-dark navbar-spacing">
         <div class="navbar-start">
             {{if (isFile .)}}
                 <div class="navbar-item">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="navbar-item">
-                <a class="github-link" href="https://github.com/odddollar/File-browser" target="_blank">
+                <a href="https://github.com/odddollar/File-browser" target="_blank">
                     <img class="image is-32x32" src="/static/github.png" alt="Github">
                 </a>
             </div>
