@@ -54,7 +54,7 @@ func viewFile(ctx *gin.Context, path string) {
 	URL := deleteEmpty(strings.Split(ctx.Param("path"), "/"))
 
 	// Send data to template
-	ctx.HTML(200, "edit.html", gin.H{"Content": content, "URL": URL})
+	ctx.HTML(200, "edit.html", gin.H{"Content": content, "URL": URL, "Path": path})
 }
 
 // Return HTML template containing contents of given path

@@ -1,14 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-background-black-ter">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/bulma.min.css">
     <title>Network File Browser: Edit file</title>
+    <style>
+        .body {
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+        #path-title {
+            margin-bottom: 1rem;
+            margin-top: 0.8rem;
+        }
+        hr {
+            margin-top: 0px;
+        }
+    </style>
 </head>
 <body>
     {{template "header.html" .URL}}
-    {{.Content}}
+    <div class="body">
+        <h1 class="title is-4 has-text-white" id="path-title">Editing: {{.Path}}</h1>
+        <hr>
+        <textarea class="textarea" rows="30">{{.Content}}</textarea>
+    </div>
 </body>
 </html>
