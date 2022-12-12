@@ -8,10 +8,10 @@ View and interact with a file system over a network with Network File Browser. A
 - Download files
 - Upload files
 - Create new files and folders
+- Edit files as text
 - **(Coming soon)** Rename files and folders
 - **(Coming soon)** Delete files and folders
 - **(Coming soon)** User authentication
-- **(Coming soon)** Web interface for editing files as text
 
 ## Usage
 
@@ -51,3 +51,5 @@ Developed on Windows, but should work on Linux and Mac. I've tested with WSL2 an
 ## Screenshots
 
 ![Home](screenshots/home.png)
+
+![Edit](screenshots/edit.png)
