@@ -42,7 +42,15 @@ func dirOrFile(ctx *gin.Context) {
 
 // View file with text editor
 func viewFile(ctx *gin.Context, path string) {
+	// Read file to string
+	file, err := os.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	content := string(file)
 
+	// Send data to template
+	ctx.HTML(200, "edit.html", gin.H{"Content": content})
 }
 
 // Return HTML template containing contents of given path
