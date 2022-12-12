@@ -43,7 +43,7 @@ func main() {
 		"join":           strings.Join,
 		"append":         templateAppend,
 		"stripLastIndex": templateStripLastIndex,
-	}).ParseFS(fViews, "views/*.html"))
+	}).ParseFS(fViews, "views/*.html", "views/*/*.html"))
 
 	// Set release or debug mode
 	if !(*ginMode) {
