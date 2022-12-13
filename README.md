@@ -2,7 +2,7 @@
 
 View and interact with a file system over a network with Network File Browser. A single binary file is all you need to host an entire directory through a beautiful web interface; all dependencies are included in the binary. Run it on a storage server to view and upload/download files without needing to install anything on a client device.
 
-**PLEASE NOTE: This program was developed by an amateur programmer with very little web development experience. As such it contains janky code and may be prone to breaking in almost every way. Please be advised.**
+**PLEASE NOTE: This program was developed by someone with limited web development experience.**
 
 **LIMITATION**: Due to the server-side-rendered nature of this program, when uploading files or creating a new file/folder through the web interface, any existing item with the same name (in that directory) will be overwritten without prompt. I'm new to web development so don't know an easy way to change this.
 
