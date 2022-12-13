@@ -17,7 +17,6 @@ View and interact with a file system over a network with Network File Browser. A
 - Edit files as text
 - **(Coming soon)** Rename files and folders
 - **(Coming soon)** Delete files and folders
-- **(Coming soon)** User authentication
 
 ## Usage
 
