@@ -10,7 +10,7 @@
     document.getElementById("new-file").onclick = () => {
         // Get input from user
         let filename = prompt("New file name:", "New file.txt");
-        if (filename == "") {
+        if (filename == "" || filename == null) {
             return;
         }
 

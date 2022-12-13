@@ -10,7 +10,7 @@
     document.getElementById("new-folder").onclick = () => {
         // Get input from user
         let foldername = prompt("New folder name:", "New folder");
-        if (foldername == "") {
+        if (foldername == "" || foldername == null) {
             return;
         }
 
