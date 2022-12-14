@@ -133,8 +133,8 @@ func uploadFile(ctx *gin.Context) {
 		}
 	}
 
-	// Redirect back to original page
-	ctx.Redirect(303, "/app"+ctx.Param("path"))
+	// Return successful status
+	ctx.Status(200)
 }
 
 // Create new folder on server and redirect to original page

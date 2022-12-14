@@ -1,8 +1,6 @@
 <div class="file is-dark">
     <label class="file-label">
-        <form action="/file/{{join . "/"}}" method="post" id="upload-form" enctype="multipart/form-data">
-            <input class="file-input" type="file" name="file" id="file-input" multiple>
-        </form>
+        <input class="file-input" type="file" name="file" id="file-input" multiple>
         <span class="file-cta">
             <img class="action-image image is-32x32" src="/static/upload.png">
             <span class="file-label">Upload file(s)</span>
@@ -12,6 +10,24 @@
 <script>
     // Submit form on file selection
     document.getElementById("file-input").onchange = function() {
-        document.getElementById("upload-form").submit();
+        // Get file selector box
+        let input = document.getElementById("file-input");
+
+        // Replace text to fix some weird templating thing
+        let url = "/file/{{join . "/"}}";
+        url.replace("\\/", "/");
+
+        // Create new FormData and add each file to "file" field
+        let data = new FormData();
+        for (const file of input.files) {
+            data.append("file", file, file.name);
+        }
+
+        // Post data back to server
+        fetch(url, {
+            method: "POST",
+            body: data
+        }).then(() => location.reload())
+        .catch(e => console.log(e));
     };
 </script>
