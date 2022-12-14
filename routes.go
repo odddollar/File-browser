@@ -29,7 +29,8 @@ func dirOrFile(ctx *gin.Context) {
 	// Get path information
 	info, err := os.Stat(path)
 	if err != nil {
-		panic(err)
+		notFound(ctx)
+		return
 	}
 
 	// Run handler function for directory or path
@@ -64,8 +65,7 @@ func viewDirectory(ctx *gin.Context, path string) {
 
 	// Display 404 page if path not found
 	if err != nil {
-		notFound(ctx)
-		return
+		panic(err)
 	}
 
 	// Create variable for storing directory information
