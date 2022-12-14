@@ -18,12 +18,24 @@
         hr {
             margin-top: 0px;
         }
+        .location {
+            display: flex;
+            align-items: center;
+        }
+        .back-arrow {
+            margin-right: 0.7rem;
+        }
     </style>
 </head>
 <body>
     {{template "header.html" .URL}}
     <div class="body">
-        <h1 class="title is-4 has-text-white" id="path-title">Editing: {{.Path}}</h1>
+        <div class="location">
+            <a class="back-arrow" href="/app/{{join (stripLastIndex .URL) "/"}}">
+                <img class="image is-24x24" src="/static/back.png">
+            </a>
+            <h1 class="title is-4 has-text-white" id="path-title">Editing: {{.Path}}</h1>
+        </div>
         <hr>
         <form action="/file/{{join .URL "/"}}" method="post" id="file-content-form" enctype="multipart/form-data">
             <textarea class="textarea" rows="30" name="file">{{.Content}}</textarea>
