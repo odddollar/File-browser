@@ -139,8 +139,14 @@ func uploadFile(ctx *gin.Context) {
 
 // Create new folder on server and redirect to original page
 func createNewFolder(ctx *gin.Context) {
+	// Bind json data to variable
+	var jsonData struct {
+		Name string `json:"name"`
+	}
+	ctx.BindJSON(&jsonData)
+
 	// Create full new folder path
-	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-folder-name")
+	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
 	path = strings.ReplaceAll(path, "//", "/")
 
 	// Make path with set permissions
@@ -149,8 +155,8 @@ func createNewFolder(ctx *gin.Context) {
 		panic(err)
 	}
 
-	// Redirect back to original page
-	ctx.Redirect(303, "/app"+ctx.Param("path"))
+	// Return successful status
+	ctx.Status(200)
 }
 
 // Create new file on server and redirect to original page
