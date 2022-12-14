@@ -4,7 +4,7 @@ View and interact with a file system over a network with Network File Browser. A
 
 **PLEASE NOTE: This program was developed by someone with limited web development experience.**
 
-**LIMITATION**: Due to the server-side-rendered nature of this program, when uploading files or creating a new file/folder through the web interface, any existing item with the same name (in that directory) will be overwritten without prompt. I'm new to web development so don't know an easy way to change this.
+**LIMITATION**: Due to my use of forms and url redirection to send data from the frontend to backend, no prompt is shown when creating a new file or folder, or uploading a file, with the same name as an existing one. The existing item will be overwritten immediately. There are better ways of doing this, and I'll likely change it in the future, but please take note.
 
 **INSPIRATION**: Inspired by the amazing [Filebrowser](https://github.com/filebrowser/filebrowser) program.
 
