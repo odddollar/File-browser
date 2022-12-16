@@ -22,7 +22,7 @@
         <div class="navbar-start">
             {{if (isFile .)}}
                 <div class="navbar-item">
-                    {{template "save.html"}}
+                    {{template "save.html" .}}
                 </div>
                 <div class="navbar-item">
                     {{template "download.html" .}}

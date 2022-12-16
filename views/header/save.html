@@ -4,6 +4,22 @@
 </button> 
 <script>
     document.getElementById("save-file").onclick = () => {
-        document.getElementById("file-content-form").submit();
+        // Get textarea from DOM
+        let content = document.getElementById("file");
+
+        // Replace text to fix some weird templating thing
+        let url = "/file/{{join . "/"}}";
+        url.replace("\\/", "/");
+
+        // Post data back to server
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+            body: JSON.stringify({
+                fileContent: content.value
+            })
+        }).catch(e => console.log(e))
     }
 </script>

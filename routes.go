@@ -105,23 +105,28 @@ func downloadFile(ctx *gin.Context) {
 
 // Upload file to server and redirect to original page
 func uploadFile(ctx *gin.Context) {
-	// Get list of files in form data
-	form, _ := ctx.MultipartForm()
-	files := form.File["file"]
+	// Run based on content type header
+	// Will be json if saving file, multipart form if uploading file
+	if ctx.ContentType() == "application/json" {
+		// Bind json data to variable
+		var jsonData struct {
+			Content string `json:"fileContent"`
+		}
+		ctx.BindJSON(&jsonData)
 
-	// If the length of "files" is 0, then the frontend sent text
-	// rather then a file
-	if len(files) == 0 {
 		// Get contents and path of file
-		fileContent := form.Value["file"][0]
 		path := rootPath + ctx.Param("path")
 
 		// Write new contents to file
-		err := os.WriteFile(path, []byte(fileContent), 0755)
+		err := os.WriteFile(path, []byte(jsonData.Content), 0755)
 		if err != nil {
 			panic(err)
 		}
 	} else {
+		// Get list of files in form data
+		form, _ := ctx.MultipartForm()
+		files := form.File["file"]
+
 		// Process each file
 		for _, file := range files {
 			// Create save path location

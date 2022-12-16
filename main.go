@@ -68,7 +68,7 @@ func main() {
 		// Handle downloading files
 		file.GET("/*path", downloadFile)
 
-		// Handle postback for uploading files
+		// Handle postback for uploading/saving files
 		file.POST("/*path", uploadFile)
 	}
 
