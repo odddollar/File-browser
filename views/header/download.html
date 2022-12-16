@@ -1,12 +1,4 @@
-<button class="button is-dark has-text-white" id="download-file">
+<a class="button is-dark has-text-white" href="/file/{{join . "/"}}" download>
     <img class="action-image image is-32x32" src="/static/download.png">
     Download
-</button> 
-<form action="/file/{{join . "/"}}" method="get" enctype="application/x-www-form-urlencoded" id="download-file-form" hidden></form>
-<script>
-    // Add event handler
-    document.getElementById("download-file").onclick = () => {
-        // Submit form
-        document.getElementById("download-file-form").submit();
-    }
-</script>
+</a> 

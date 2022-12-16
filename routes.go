@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -106,23 +105,28 @@ func downloadFile(ctx *gin.Context) {
 
 // Upload file to server and redirect to original page
 func uploadFile(ctx *gin.Context) {
-	// Get list of files in form data
-	form, _ := ctx.MultipartForm()
-	files := form.File["file"]
+	// Run based on content type header
+	// Will be json if saving file, multipart form if uploading file
+	if ctx.ContentType() == "application/json" {
+		// Bind json data to variable
+		var jsonData struct {
+			Content string `json:"fileContent"`
+		}
+		ctx.BindJSON(&jsonData)
 
-	// If the length of "files" is 0, then the frontend sent text
-	// rather then a file
-	if len(files) == 0 {
 		// Get contents and path of file
-		fileContent := form.Value["file"][0]
 		path := rootPath + ctx.Param("path")
 
 		// Write new contents to file
-		err := os.WriteFile(path, []byte(fileContent), 0755)
+		err := os.WriteFile(path, []byte(jsonData.Content), 0755)
 		if err != nil {
 			panic(err)
 		}
 	} else {
+		// Get list of files in form data
+		form, _ := ctx.MultipartForm()
+		files := form.File["file"]
+
 		// Process each file
 		for _, file := range files {
 			// Create save path location
@@ -134,21 +138,21 @@ func uploadFile(ctx *gin.Context) {
 		}
 	}
 
-	// Redirect back to original page
-	ctx.Redirect(303, "/app"+ctx.Param("path"))
+	// Return successful status
+	ctx.Status(200)
 }
 
 // Create new folder on server and redirect to original page
 func createNewFolder(ctx *gin.Context) {
-	// Create full new folder path
-	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-folder-name")
-
-	// Prevent creating folders outside root directory
-	path = filepath.Clean(path)
-	path = strings.ReplaceAll(path, "\\", "/")
-	if !strings.Contains(path, rootPath) {
-		fmt.Println("Not permitted:", path)
+	// Bind json data to variable
+	var jsonData struct {
+		Name string `json:"name"`
 	}
+	ctx.BindJSON(&jsonData)
+
+	// Create full new folder path
+	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
+	path = strings.ReplaceAll(path, "//", "/")
 
 	// Make path with set permissions
 	err := os.Mkdir(path, 0755)
@@ -156,21 +160,21 @@ func createNewFolder(ctx *gin.Context) {
 		panic(err)
 	}
 
-	// Redirect back to original page
-	ctx.Redirect(303, "/app"+ctx.Param("path"))
+	// Return successful status
+	ctx.Status(200)
 }
 
 // Create new file on server and redirect to original page
 func createNewFile(ctx *gin.Context) {
-	// Create full new file path
-	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-file-name")
-
-	// Prevent creating folders outside root directory
-	path = filepath.Clean(path)
-	path = strings.ReplaceAll(path, "\\", "/")
-	if !strings.Contains(path, rootPath) {
-		fmt.Println("Not permitted:", path)
+	// Bind json data to variable
+	var jsonData struct {
+		Name string `json:"name"`
 	}
+	ctx.BindJSON(&jsonData)
+
+	// Create full new file path
+	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
+	path = strings.ReplaceAll(path, "//", "/")
 
 	// Make file with set permissions
 	err := os.WriteFile(path, []byte(""), 0755)
@@ -178,6 +182,6 @@ func createNewFile(ctx *gin.Context) {
 		panic(err)
 	}
 
-	// Redirect back to original page
-	ctx.Redirect(303, "/app"+ctx.Param("path"))
+	// Return successful status
+	ctx.Status(200)
 }

@@ -37,9 +37,7 @@
             <h1 class="title is-4 has-text-white" id="path-title">Editing: {{.Path}}</h1>
         </div>
         <hr>
-        <form action="/file/{{join .URL "/"}}" method="post" id="file-content-form" enctype="multipart/form-data">
-            <textarea class="textarea" rows="30" name="file">{{.Content}}</textarea>
-        </form>
+        <textarea class="textarea" rows="30" id="file">{{.Content}}</textarea>
     </div>
 </body>
 </html>
