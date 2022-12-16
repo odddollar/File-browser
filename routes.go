@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -141,7 +142,13 @@ func uploadFile(ctx *gin.Context) {
 func createNewFolder(ctx *gin.Context) {
 	// Create full new folder path
 	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-folder-name")
-	path = strings.ReplaceAll(path, "//", "/")
+
+	// Prevent creating folders outside root directory
+	path = filepath.Clean(path)
+	path = strings.ReplaceAll(path, "\\", "/")
+	if !strings.Contains(path, rootPath) {
+		fmt.Println("Not permitted:", path)
+	}
 
 	// Make path with set permissions
 	err := os.Mkdir(path, 0755)
@@ -157,7 +164,13 @@ func createNewFolder(ctx *gin.Context) {
 func createNewFile(ctx *gin.Context) {
 	// Create full new file path
 	path := rootPath + ctx.Param("path") + "/" + ctx.PostForm("new-file-name")
-	path = strings.ReplaceAll(path, "//", "/")
+
+	// Prevent creating folders outside root directory
+	path = filepath.Clean(path)
+	path = strings.ReplaceAll(path, "\\", "/")
+	if !strings.Contains(path, rootPath) {
+		fmt.Println("Not permitted:", path)
+	}
 
 	// Make file with set permissions
 	err := os.WriteFile(path, []byte(""), 0755)
