@@ -154,10 +154,13 @@ func createNewFolder(ctx *gin.Context) {
 	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
 	path = strings.ReplaceAll(path, "//", "/")
 
-	// Make path with set permissions
-	err := os.Mkdir(path, 0755)
-	if err != nil {
-		panic(err)
+	// Check that path is valid and doesn't escape root path
+	if isValidPath(path) {
+		// Make path with set permissions
+		err := os.Mkdir(path, 0755)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Return successful status
@@ -176,10 +179,13 @@ func createNewFile(ctx *gin.Context) {
 	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
 	path = strings.ReplaceAll(path, "//", "/")
 
-	// Make file with set permissions
-	err := os.WriteFile(path, []byte(""), 0755)
-	if err != nil {
-		panic(err)
+	// Check that path is valid and doesn't escape root path
+	if isValidPath(path) {
+		// Make file with set permissions
+		err := os.WriteFile(path, []byte(""), 0755)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Return successful status
