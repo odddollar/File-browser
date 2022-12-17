@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"errors"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -66,4 +67,22 @@ func isValidPath(path string) bool {
 
 	// If the given path is in the cleaned root path, then the directory is valid
 	return strings.Contains(p, r)
+}
+
+// Only create file if it doesn't already exist.
+// If is does exist, returns an error
+func createFile(path string) error {
+	// If file's path doesn't exist, create the file and return nil
+	if _, err := os.Stat(path); err != nil {
+		// If error occurs while writing to file, the path is likely malformed
+		if err = os.WriteFile(path, []byte(""), 0755); err != nil {
+			return err
+		}
+
+		// If the file path didn't exist and was created successfully, return nothing
+		return nil
+	}
+
+	// Return error if file does exist
+	return errors.New("Path already exists: " + path)
 }

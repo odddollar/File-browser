@@ -103,7 +103,7 @@ func downloadFile(ctx *gin.Context) {
 	ctx.FileAttachment(path, filepath.Base(path))
 }
 
-// Upload file to server and redirect to original page
+// Upload file to server
 func uploadFile(ctx *gin.Context) {
 	// Run based on content type header
 	// Will be json if saving file, multipart form if uploading file
@@ -142,7 +142,7 @@ func uploadFile(ctx *gin.Context) {
 	ctx.Status(200)
 }
 
-// Create new folder on server and redirect to original page
+// Create new folder on server
 func createNewFolder(ctx *gin.Context) {
 	// Bind json data to variable
 	var jsonData struct {
@@ -159,15 +159,25 @@ func createNewFolder(ctx *gin.Context) {
 		// Make path with set permissions
 		err := os.Mkdir(path, 0755)
 		if err != nil {
-			panic(err)
+			// Server was not able create this directory.
+			// This is mainly used if a path is valid, but malformed
+			// (i.e. "C:/Windows/C:/users" where "C:/Windows" is the root path),
+			// which helps prevent creating folders outside the root path.
+			// Also used to prevent creating folders with names that already exist
+			ctx.Status(403)
+			return
 		}
+	} else {
+		// Path isn't valid and user was likely trying to escape the root path
+		ctx.Status(403)
+		return
 	}
 
 	// Return successful status
 	ctx.Status(200)
 }
 
-// Create new file on server and redirect to original page
+// Create new file on server
 func createNewFile(ctx *gin.Context) {
 	// Bind json data to variable
 	var jsonData struct {
@@ -182,10 +192,20 @@ func createNewFile(ctx *gin.Context) {
 	// Check that path is valid and doesn't escape root path
 	if isValidPath(path) {
 		// Make file with set permissions
-		err := os.WriteFile(path, []byte(""), 0755)
+		err := createFile(path)
 		if err != nil {
-			panic(err)
+			// Server was not able create this file.
+			// This is mainly used if a path is valid, but malformed
+			// (i.e. "C:/Windows/C:/users/hello.txt" where "C:/Windows" is the root path),
+			// which helps prevent creating files outside the root path.
+			// Also used to prevent creating files with names that already exist
+			ctx.Status(403)
+			return
 		}
+	} else {
+		// Path isn't valid and user was likely trying to escape the root path
+		ctx.Status(403)
+		return
 	}
 
 	// Return successful status

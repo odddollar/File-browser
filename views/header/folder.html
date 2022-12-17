@@ -24,7 +24,13 @@
             body: JSON.stringify({
                 name: foldername,
             })
-        }).then(() => location.reload())
-        .catch(e => console.log(e))
+        }).then(res => {
+            // If 403 response issued, show error message, otherwise reload page to update
+            if (res.status == 403) {
+                alert("Can't create folder in specified location =(");
+            } else {
+                location.reload();
+            }
+        }).catch(e => console.log(e));
     };
 </script>
