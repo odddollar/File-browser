@@ -37,6 +37,7 @@ func main() {
 
 	// Set root path to CLI value
 	rootPath = *rP
+	rootPath = strings.ReplaceAll(rootPath, "\\", "/")
 
 	// Create template
 	tmpl := template.Must(template.New("").Funcs(template.FuncMap{
