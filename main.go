@@ -86,15 +86,8 @@ func main() {
 		file.POST("/*path", uploadFile)
 	}
 
-	// Router group for creating new items
-	new := router.Group("/new")
-	{
-		// Handle postback for creating new folders
-		new.POST("/folder/*path", createNewFolder)
-
-		// Handle postback for creating new files
-		new.POST("/file/*path", createNewFile)
-	}
+	// Router path for creating new items
+	router.POST("/new/:type/*path", createNew)
 
 	// Add route for 404
 	router.NoRoute(notFound)

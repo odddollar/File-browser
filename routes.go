@@ -142,63 +142,37 @@ func uploadFile(ctx *gin.Context) {
 	ctx.Status(200)
 }
 
-// Create new folder on server
-func createNewFolder(ctx *gin.Context) {
+// Create new file or folder on server
+func createNew(ctx *gin.Context) {
 	// Bind json data to variable
 	var jsonData struct {
 		Name string `json:"name"`
 	}
 	ctx.BindJSON(&jsonData)
 
-	// Create full new folder path
+	// Create full new path
 	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
 	path = strings.ReplaceAll(path, "//", "/")
 
 	// Check that path is valid and doesn't escape root path
 	if isValidPath(path) {
-		// Make path with set permissions
-		err := os.Mkdir(path, 0755)
-		if err != nil {
-			// Server was not able create this directory.
-			// This is mainly used if a path is valid, but malformed
-			// (i.e. "C:/Windows/C:/users" where "C:/Windows" is the root path),
-			// which helps prevent creating folders outside the root path.
-			// Also used to prevent creating folders with names that already exist
-			ctx.Status(403)
-			return
+		var err error
+
+		// Check whether file or folder needs to be created
+		if ctx.Param("type") == "folder" {
+			// Create folder
+			err = os.Mkdir(path, 0755)
+		} else if ctx.Param("type") == "file" {
+			// Create file
+			err = createFile(path)
 		}
-	} else {
-		// Path isn't valid and user was likely trying to escape the root path
-		ctx.Status(403)
-		return
-	}
 
-	// Return successful status
-	ctx.Status(200)
-}
-
-// Create new file on server
-func createNewFile(ctx *gin.Context) {
-	// Bind json data to variable
-	var jsonData struct {
-		Name string `json:"name"`
-	}
-	ctx.BindJSON(&jsonData)
-
-	// Create full new file path
-	path := rootPath + ctx.Param("path") + "/" + jsonData.Name
-	path = strings.ReplaceAll(path, "//", "/")
-
-	// Check that path is valid and doesn't escape root path
-	if isValidPath(path) {
-		// Make file with set permissions
-		err := createFile(path)
 		if err != nil {
-			// Server was not able create this file.
+			// Server was not able create this file or folder.
 			// This is mainly used if a path is valid, but malformed
 			// (i.e. "C:/Windows/C:/users/hello.txt" where "C:/Windows" is the root path),
-			// which helps prevent creating files outside the root path.
-			// Also used to prevent creating files with names that already exist
+			// which helps prevent creating things outside the root path.
+			// Also used to prevent creating things with names that already exist
 			ctx.Status(403)
 			return
 		}
