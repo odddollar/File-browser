@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/akamensky/argparse"
@@ -26,7 +27,7 @@ func main() {
 	parser := argparse.NewParser("Network File Browser", "View file system contents over a network")
 	ginMode := parser.Flag("d", "dev", &argparse.Options{Default: false, Help: "Run Gin framework in debug/dev mode"})
 	port := parser.Int("p", "port", &argparse.Options{Default: 8080, Help: "Port to host webserver on"})
-	rP := parser.String("v", "path", &argparse.Options{Required: true, Help: "Root path to host"})
+	rP := parser.String("v", "path", &argparse.Options{Required: true, Help: "Root path to host. Must be absolute and exist"})
 
 	// Run command line parser
 	err := parser.Parse(os.Args)
@@ -38,6 +39,18 @@ func main() {
 	// Set root path to CLI value
 	rootPath = *rP
 	rootPath = strings.ReplaceAll(rootPath, "\\", "/")
+
+	// Check if root path is absolute to prevent weird path errors
+	if !filepath.IsAbs(rootPath) {
+		fmt.Println(parser.Usage("Path specified isn't absolute"))
+		return
+	}
+
+	// Check that root path actually exists
+	if !pathExists(rootPath) {
+		fmt.Println(parser.Usage("Path specified doesn't exist"))
+		return
+	}
 
 	// Create template
 	tmpl := template.Must(template.New("").Funcs(template.FuncMap{

@@ -69,13 +69,19 @@ func isValidPath(path string) bool {
 	return strings.Contains(p, r)
 }
 
+// Checks if a given path exists
+func pathExists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
 // Only create file if it doesn't already exist.
 // If is does exist, returns an error
 func createFile(path string) error {
 	// If file's path doesn't exist, create the file and return nil
-	if _, err := os.Stat(path); err != nil {
+	if !pathExists(path) {
 		// If error occurs while writing to file, the path is likely malformed
-		if err = os.WriteFile(path, []byte(""), 0755); err != nil {
+		if err := os.WriteFile(path, []byte(""), 0755); err != nil {
 			return err
 		}
 
