@@ -20,6 +20,17 @@ func notFound(ctx *gin.Context) {
 	})
 }
 
+// Return error 403 and template stating not permitted to access that file/directory
+func notPermitted(ctx *gin.Context) {
+	// Get split URL of file
+	URL := deleteEmpty(strings.Split(ctx.Param("path"), "/"))
+
+	ctx.HTML(403, "403.html", gin.H{
+		"Message": "\"" + ctx.Request.Host + ctx.Request.URL.Path + "\" is not accessible. Permission is likely denied",
+		"URL":     URL,
+	})
+}
+
 // Check if request if for directory or file, handing context to relevant function
 func dirOrFile(ctx *gin.Context) {
 	// Get path from url and add to root path
@@ -45,9 +56,13 @@ func dirOrFile(ctx *gin.Context) {
 func viewFile(ctx *gin.Context, path string) {
 	// Read file to string
 	file, err := os.ReadFile(path)
+
+	// Display 403 page if not able to read
 	if err != nil {
-		panic(err)
+		notPermitted(ctx)
+		return
 	}
+
 	content := string(file)
 
 	// Get split URL of file
@@ -63,9 +78,10 @@ func viewDirectory(ctx *gin.Context, path string) {
 	// Read file path on server
 	files, err := os.ReadDir(path)
 
-	// Display 404 page if path not found
+	// Display 403 page if not able to read
 	if err != nil {
-		panic(err)
+		notPermitted(ctx)
+		return
 	}
 
 	// Create variable for storing directory information
