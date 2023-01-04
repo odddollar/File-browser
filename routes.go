@@ -15,7 +15,8 @@ func appRedirect(ctx *gin.Context) {
 
 // Return error 404 with appropriate template
 func notFound(ctx *gin.Context) {
-	ctx.HTML(404, "404.html", gin.H{
+	ctx.HTML(404, "error.html", gin.H{
+		"Error":   404,
 		"Message": "\"" + ctx.Request.Host + ctx.Request.URL.Path + "\" not found",
 	})
 }
@@ -25,7 +26,8 @@ func notPermitted(ctx *gin.Context) {
 	// Get split URL of file
 	URL := deleteEmpty(strings.Split(ctx.Param("path"), "/"))
 
-	ctx.HTML(403, "403.html", gin.H{
+	ctx.HTML(403, "error.html", gin.H{
+		"Error":   403,
 		"Message": "\"" + ctx.Request.Host + ctx.Request.URL.Path + "\" is not accessible. Permission is likely denied",
 		"URL":     URL,
 	})

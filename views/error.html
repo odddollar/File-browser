@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/bulma.min.css">
-    <title>Network File Browser: 403</title>
+    <title>Network File Browser: {{if eq .Error 403}}403{{else}}404{{end}}</title>
     <style>
         .body {
             margin-left: 2rem;
@@ -26,13 +26,17 @@
 <body>
     {{template "error-header.html"}}
     <div class="body">
-        <div class="back-arrow">
-            <a href="/app/{{join (stripLastIndex .URL) "/"}}">
-                <img class="image is-24x24" src="/static/back.png">
-            </a>
-        </div>
-        <hr>
-        <h2 class="title is-4 has-text-white" id="error">Error 403: {{.Message}}</h2>
+        {{if eq .Error 403}}
+            <div class="back-arrow">
+                <a href="/app/{{join (stripLastIndex .URL) "/"}}">
+                    <img class="image is-24x24" src="/static/back.png">
+                </a>
+            </div>
+            <hr>
+            <h2 class="title is-4 has-text-white" id="error">Error 403: {{.Message}}</h2>
+        {{else}}
+            <h2 class="title is-4 has-text-white" id="error">Error 404: {{.Message}}</h2>
+        {{end}}
     </div>
 </body>
 </html>
