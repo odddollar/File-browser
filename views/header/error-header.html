@@ -1,0 +1,40 @@
+<style>
+    .navbar-burger {
+        margin-top: 0.4rem;
+    }
+    .action-image {
+        margin-right: 0.3rem;
+    }
+    .navbar-spacing {
+        margin-right: 0.5rem;
+    }
+</style>
+<nav class="navbar has-background-dark" role="navigation">
+    <div class="navbar-brand">
+        <a href="/"><h1 class="navbar-item title has-text-white">Network File Browser</h1></a>
+        <a role="button" class="navbar-burger has-text-white" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu has-background-dark navbar-spacing">
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <a href="https://github.com/odddollar/File-browser" target="_blank">
+                    <img class="image is-32x32" src="/static/github.png" alt="Github">
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+<script>
+    (function() {
+        var burger = document.querySelector('.navbar-burger');
+        var menu = document.querySelector('.navbar-menu');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            menu.classList.toggle('is-active');
+        });
+    })();
+</script>
