@@ -93,5 +93,9 @@ func main() {
 	router.NoRoute(notFound)
 
 	// Run server
-	router.Run(fmt.Sprintf("localhost:%d", *port))
+	if !(*ginMode) {
+		router.Run(fmt.Sprint(":", *port))
+	} else {
+		router.Run(fmt.Sprint("localhost:", *port))
+	}
 }
